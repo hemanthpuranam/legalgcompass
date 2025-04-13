@@ -54,10 +54,11 @@ const SignUpForm: React.FC = () => {
       });
       router.push('/dashboard');
     } catch (error: any) {
-       toast({
+       console.error("Sign-up error:", error.message, error.code);
+        toast({
         variant: "destructive",
         title: "Sign up failed!",
-        description: error.message,
+        description: error.message || "An error occurred during sign-up.",
       });
     } finally {
       setIsLoading(false);
@@ -92,7 +93,7 @@ const SignUpForm: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        </FormField>
         <FormField
           control={form.control}
           name="password"
@@ -105,9 +106,9 @@ const SignUpForm: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Signing up..." : "Sign Up"}
+        </FormField>
+        <Button disabled={isLoading} type="submit">
+          {isLoading ? "Signing Up..." : "Sign Up"}
         </Button>
       </form>
     </Form>
@@ -115,5 +116,3 @@ const SignUpForm: React.FC = () => {
 };
 
 export default SignUpForm;
-
-

@@ -4,6 +4,7 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
+import { Toaster } from "@/components/ui/toaster";
 
 const AuthenticationPage: React.FC = () => {
   return (
@@ -22,10 +23,9 @@ const AuthenticationPage: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <Toaster />
     </div>
   );
 };
 
 export default AuthenticationPage;
-
-

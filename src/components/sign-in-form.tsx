@@ -34,7 +34,7 @@ const SignInForm: React.FC = () => {
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     setIsLoading(true);
     try {
-      if (!app) {
+       if (!app) {
         throw new Error("Firebase app not initialized.");
       }
 
@@ -46,10 +46,11 @@ const SignInForm: React.FC = () => {
       });
       router.push('/dashboard');
     } catch (error: any) {
+      console.error("Sign-in error:", error.message, error.code);
       toast({
         variant: "destructive",
         title: "Sign in failed!",
-        description: error.message,
+        description: error.message || "An error occurred during sign-in.",
       });
     } finally {
       setIsLoading(false);
@@ -84,9 +85,9 @@ const SignInForm: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Signing in..." : "Sign In"}
+        </FormField>
+        <Button disabled={isLoading} type="submit">
+          {isLoading ? "Signing In..." : "Sign In"}
         </Button>
       </form>
     </Form>
@@ -94,5 +95,3 @@ const SignInForm: React.FC = () => {
 };
 
 export default SignInForm;
-
-
