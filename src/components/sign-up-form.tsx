@@ -107,7 +107,7 @@ const SignUpForm: React.FC = () => {
                 <FormMessage />
               </FormItem>
             )}
-          </FormField>
+          />
           <Button disabled={isLoading} type="submit">
             {isLoading ? "Signing Up..." : "Sign Up"}
           </Button>
