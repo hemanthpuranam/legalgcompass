@@ -1,6 +1,7 @@
 "use client";
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth"; // Import getAuth
 
 // Firebase configuration
 const firebaseConfig = {
@@ -23,7 +24,9 @@ const hasFirebaseConfig =
   firebaseConfig.appId &&
   firebaseConfig.measurementId;
 
-// Initialize Firebase only if config values are present
+let appInitialized = false;
+
+// Initialize Firebase only if config values are present and app is not already initialized
 export const app = hasFirebaseConfig ? (getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()) : null;
 
 export const analytics = () => {

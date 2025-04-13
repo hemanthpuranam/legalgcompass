@@ -5,13 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { app } from '@/lib/firebase';
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [displayName, setDisplayName] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -20,8 +21,10 @@ export default function Home() {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
           if (user) {
             setIsAuthenticated(true);
+            setDisplayName(user.displayName); // Set the display name
           } else {
             setIsAuthenticated(false);
+            setDisplayName(null);
             router.push('/auth');
           }
           setIsLoading(false); // Set loading to false after auth check
@@ -40,6 +43,17 @@ export default function Home() {
     const unsubscribe = checkAuth();
     return unsubscribe;
   }, [router]);
+
+  const handleSignOut = async () => {
+    try {
+      const auth = getAuth(app);
+      await signOut(auth);
+      router.push('/auth');
+    } catch (error: any) {
+      console.error("Sign out failed:", error);
+    }
+  };
+
 
   if (isLoading) {
     return (
@@ -69,10 +83,11 @@ export default function Home() {
           <CardDescription>Your guide to Indian law and rights.</CardDescription>
         </CardHeader>
         <CardContent>
-          <p>Explore the information repository and get answers from the AI Legal Assistant.</p>
+          <p>Welcome, {displayName || 'User'}! Explore the information repository and get answers from the AI Legal Assistant.</p>
           <Link href="/dashboard">
             <Button>Go to Dashboard</Button>
           </Link>
+          <Button variant="destructive" onClick={handleSignOut}>Sign Out</Button>
         </CardContent>
       </Card>
     </div>

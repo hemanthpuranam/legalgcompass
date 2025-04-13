@@ -1,13 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useRouter } from 'next/navigation';
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { app } from '@/lib/firebase';
+import { useToast } from "@/hooks/use-toast";
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -15,6 +19,10 @@ const signInSchema = z.object({
 });
 
 const SignInForm: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -23,10 +31,29 @@ const SignInForm: React.FC = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof signInSchema>) => {
-    // Here, you would typically handle the sign-in logic,
-    // such as sending the values to an authentication service.
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof signInSchema>) => {
+    setIsLoading(true);
+    try {
+      if (!app) {
+        throw new Error("Firebase app not initialized.");
+      }
+
+      const auth = getAuth(app);
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      toast({
+        title: "Sign in successful!",
+        description: "You have successfully signed in.",
+      });
+      router.push('/dashboard');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Sign in failed!",
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -58,7 +85,9 @@ const SignInForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Sign In</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Signing in..." : "Sign In"}
+        </Button>
       </form>
     </Form>
   );

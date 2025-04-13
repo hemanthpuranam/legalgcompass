@@ -1,13 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useRouter } from 'next/navigation';
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
+import { app } from '@/lib/firebase';
+import { useToast } from "@/hooks/use-toast";
 
 const signUpSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -16,6 +20,10 @@ const signUpSchema = z.object({
 });
 
 const SignUpForm: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+   const { toast } = useToast();
+
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -25,10 +33,35 @@ const SignUpForm: React.FC = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof signUpSchema>) => {
-    // Here, you would typically handle the sign-up logic,
-    // such as sending the values to an authentication service.
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
+    setIsLoading(true);
+    try {
+      if (!app) {
+        throw new Error("Firebase app not initialized.");
+      }
+
+      const auth = getAuth(app);
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+
+      // Update the user's profile with the name
+      await updateProfile(userCredential.user, {
+        displayName: values.name,
+      });
+
+      toast({
+        title: "Sign up successful!",
+        description: "You have successfully signed up.",
+      });
+      router.push('/dashboard');
+    } catch (error: any) {
+       toast({
+        variant: "destructive",
+        title: "Sign up failed!",
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -73,7 +106,9 @@ const SignUpForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Sign Up</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Signing up..." : "Sign Up"}
+        </Button>
       </form>
     </Form>
   );
