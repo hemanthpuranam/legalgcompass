@@ -115,3 +115,4 @@ const SignUpForm: React.FC = () => {
 };
 
 export default SignUpForm;
+
