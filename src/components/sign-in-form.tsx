@@ -85,7 +85,7 @@ const SignInForm: React.FC = () => {
               <FormMessage />
             </FormItem>
           )}
-        </FormField>
+        />
         <Button disabled={isLoading} type="submit">
           {isLoading ? "Signing In..." : "Sign In"}
         </Button>
@@ -95,3 +95,4 @@ const SignInForm: React.FC = () => {
 };
 
 export default SignInForm;
+
