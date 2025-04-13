@@ -6,15 +6,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import FileUploader from "@/components/file-uploader";
 
 const DocumentClarificationPage: React.FC = () => {
   const [documentContent, setDocumentContent] = useState('');
   const [query, setQuery] = useState('');
   const [clarification, setClarification] = useState<string | null>(null);
+  const [uploadedFileContent, setUploadedFileContent] = useState<string | null>(null);
+
+  const handleFileUploaded = (content: string) => {
+    setUploadedFileContent(content);
+    setDocumentContent(content); // Optionally set the document content to the uploaded file content
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await documentClarification({ documentContent: documentContent, query: query });
+    const content = uploadedFileContent || documentContent;
+    if (!content || !query) {
+      alert('Please provide both document content and a query.');
+      return;
+    }
+    const result = await documentClarification({ documentContent: content, query: query });
     setClarification(result?.clarification || 'No clarification available.');
   };
 
@@ -28,8 +41,11 @@ const DocumentClarificationPage: React.FC = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
+              <FileUploader onFileUploaded={handleFileUploaded} />
+            </div>
+            <div>
               <Textarea
-                placeholder="Enter the content of the legal document"
+                placeholder="Or enter the content of the legal document"
                 value={documentContent}
                 onChange={(e) => setDocumentContent(e.target.value)}
                 className="w-full"
@@ -64,3 +80,5 @@ const DocumentClarificationPage: React.FC = () => {
 };
 
 export default DocumentClarificationPage;
+
+    
