@@ -1,6 +1,8 @@
 "use client";
 import React from 'react';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -12,6 +14,9 @@ export default function Home() {
         </CardHeader>
         <CardContent>
           <p>Explore the information repository and get answers from the AI Legal Assistant.</p>
+          <Link href="/dashboard">
+            <Button>Go to Dashboard</Button>
+          </Link>
         </CardContent>
       </Card>
     </div>
