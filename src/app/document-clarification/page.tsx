@@ -27,8 +27,13 @@ const DocumentClarificationPage: React.FC = () => {
       alert('Please provide both document content and a query.');
       return;
     }
-    const result = await documentClarification({ documentContent: content, query: query });
-    setClarification(result?.clarification || 'No clarification available.');
+    try {
+      const result = await documentClarification({ documentContent: content, query: query });
+      setClarification(result?.clarification || 'No clarification available.');
+    } catch (error: any) {
+      console.error("Error during document clarification:", error);
+      setClarification(`Error: ${error.message || 'Failed to get clarification.'}`);
+    }
   };
 
   return (
@@ -80,5 +85,3 @@ const DocumentClarificationPage: React.FC = () => {
 };
 
 export default DocumentClarificationPage;
-
-    
