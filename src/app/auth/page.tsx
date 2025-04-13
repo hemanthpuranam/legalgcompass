@@ -4,8 +4,6 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 const AuthenticationPage: React.FC = () => {
   return (
@@ -23,9 +21,6 @@ const AuthenticationPage: React.FC = () => {
             <SignUpForm />
           </TabsContent>
         </Tabs>
-        <Link href="/dashboard">
-          <Button>Go to Dashboard</Button>
-        </Link>
       </div>
     </div>
   );
