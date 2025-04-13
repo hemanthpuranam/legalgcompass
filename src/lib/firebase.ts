@@ -1,3 +1,4 @@
+"use client";
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
@@ -12,10 +13,21 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+// Check if Firebase config values are present
+const hasFirebaseConfig =
+  firebaseConfig.apiKey &&
+  firebaseConfig.authDomain &&
+  firebaseConfig.projectId &&
+  firebaseConfig.storageBucket &&
+  firebaseConfig.messagingSenderId &&
+  firebaseConfig.appId &&
+  firebaseConfig.measurementId;
+
+// Initialize Firebase only if config values are present
+export const app = hasFirebaseConfig ? (getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()) : null;
+
 export const analytics = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && app) {
     return getAnalytics(app);
   } else {
     return null;

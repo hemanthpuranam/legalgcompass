@@ -11,6 +11,7 @@ import { app } from '@/lib/firebase';
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -21,10 +22,27 @@ export default function Home() {
         setIsAuthenticated(false);
         router.push('/auth');
       }
+      setIsLoading(false); // Set loading to false after auth check
     });
 
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Loading...</CardTitle>
+            <CardDescription>Checking authentication status...</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Please wait while we verify your authentication status.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null; // Or a loading indicator if desired
