@@ -1,77 +1,49 @@
 "use client";
 import React from 'react';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import Link from "next/link";
 import { Icons } from "@/components/icons";
+import {Card, CardContent, CardHeader, CardTitle, CardDescription} from "@/components/ui/card";
 
 const DashboardPage: React.FC = () => {
+  const menuItems = [
+    {
+      href: "/legal-assistant",
+      title: "Legal Assistant",
+      description: "Get answers to your legal questions.",
+      icon: Icons.help,
+    },
+    {
+      href: "/document-clarification",
+      title: "Document Clarification",
+      description: "Clarify your legal documents.",
+      icon: Icons.upload,
+    },
+    {
+      href: "/information-repository",
+      title: "Information Repository",
+      description: "Explore legal topics and rights.",
+      icon: Icons.book,
+    },
+  ];
+
   return (
-    <SidebarProvider>
-      <div className="md:pl-64">
-        <Sidebar>
-          <SidebarHeader>
-            <h4 className="font-semibold text-md">Legal Compass</h4>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <Link href="/legal-assistant">
-                    <SidebarMenuButton>
-                      <Icons.help />
-                      <span>Legal Assistant</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <Link href="/document-clarification">
-                    <SidebarMenuButton>
-                      <Icons.upload />
-                      <span>Document Clarification</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <Link href="/information-repository">
-                    <SidebarMenuButton>
-                      <Icons.book />
-                      <span>Information Repository</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroup>
-          </SidebarContent>
-          <SidebarFooter>
-            <p className="text-center text-xs">
-              Legal Compass © {new Date().getFullYear()}
-            </p>
-          </SidebarFooter>
-        </Sidebar>
-        <div className="p-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Dashboard</CardTitle>
-              <CardDescription>Welcome to your Legal Compass dashboard.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Use the sidebar to navigate to different features.</p>
-            </CardContent>
-          </Card>
-        </div>
+    <div className="container mx-auto py-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {menuItems.map((item) => (
+          <Link key={item.title} href={item.href}>
+            <Card className="hover:bg-secondary">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  {item.icon && <item.icon className="h-4 w-4" />}
+                  <span>{item.title}</span>
+                </CardTitle>
+                <CardDescription>{item.description}</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
       </div>
-    </SidebarProvider>
+    </div>
   );
 };
 
