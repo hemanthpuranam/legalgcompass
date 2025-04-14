@@ -5,13 +5,13 @@ import { getAuth } from "firebase/auth"; // Import getAuth
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyC1m_tLjOb6leSVdKy3d3opzhlBL3NnVAA",
-    authDomain: "legal-compass.firebaseapp.com",
-    projectId: "legal-compass",
-    storageBucket: "legal-compass.firebasestorage.app",
-    messagingSenderId: "1056458077242",
-    appId: "1:1056458077242:web:80e48b3329e4876620f103",
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    apiKey: "AIzaSyAToKyQ5_MmrimQr2JaPC8ikxpGaUGUpBY",
+    authDomain: "urlawyer-50368.firebaseapp.com",
+    projectId: "urlawyer-50368",
+    storageBucket: "urlawyer-50368.firebasestorage.app",
+    messagingSenderId: "84810542536",
+    appId: "1:84810542536:web:b0ebea9c48d9aad923a4fd",
+  measurementId: "G-2RR5G4NPMF"
 };
 
 let app: any = null; // Initialize app outside the conditional block
@@ -52,3 +52,4 @@ export const analytics = () => {
     return null;
   }
 };
+
