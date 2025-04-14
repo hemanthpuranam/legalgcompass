@@ -24,19 +24,26 @@ export default function Home() {
         return;
       }
 
-      const auth = getAuth(app);
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setIsAuthenticated(true);
-          setDisplayName(user.displayName); // Set the display name
-        } else {
-          setIsAuthenticated(false);
-          setDisplayName(null);
-        }
-        setIsLoading(false); // Set loading to false after auth check
-      });
+      try {
+        const auth = getAuth(app);
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setIsAuthenticated(true);
+            setDisplayName(user.displayName); // Set the display name
+          } else {
+            setIsAuthenticated(false);
+            setDisplayName(null);
+          }
+          setIsLoading(false); // Set loading to false after auth check
+        });
 
-      return () => unsubscribe(); // Cleanup subscription on unmount
+        return () => unsubscribe(); // Cleanup subscription on unmount
+      } catch (error: any) {
+        console.error("Error during authentication check:", error);
+        setIsLoading(false);
+        setIsAuthenticated(false);
+        router.push('/auth');
+      }
     };
 
     checkAuth();
