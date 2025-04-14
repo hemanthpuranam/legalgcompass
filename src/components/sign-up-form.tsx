@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
-import { app } from '@/lib/firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { app, auth } from '@/lib/firebase';
 import { useToast } from "@/hooks/use-toast";
 
 const signUpSchema = z.object({
@@ -22,7 +22,7 @@ const signUpSchema = z.object({
 const SignUpForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-   const { toast } = useToast();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -40,7 +40,6 @@ const SignUpForm: React.FC = () => {
         throw new Error("Firebase app not initialized.");
       }
 
-      const auth = getAuth(app);
       const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
 
       // Update the user's profile with the name
@@ -54,8 +53,8 @@ const SignUpForm: React.FC = () => {
       });
       router.push('/dashboard');
     } catch (error: any) {
-       console.error("Sign-up error:", error.message, error.code);
-        toast({
+      console.error("Sign-up error:", error.message, error.code);
+      toast({
         variant: "destructive",
         title: "Sign up failed!",
         description: error.message || "An error occurred during sign-up.",

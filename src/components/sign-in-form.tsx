@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { app } from '@/lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { app, auth } from '@/lib/firebase';
 import { useToast } from "@/hooks/use-toast";
 
 const signInSchema = z.object({
@@ -34,11 +34,10 @@ const SignInForm: React.FC = () => {
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     setIsLoading(true);
     try {
-       if (!app) {
+      if (!app) {
         throw new Error("Firebase app not initialized.");
       }
 
-      const auth = getAuth(app);
       await signInWithEmailAndPassword(auth, values.email, values.password);
       toast({
         title: "Sign in successful!",
@@ -95,4 +94,3 @@ const SignInForm: React.FC = () => {
 };
 
 export default SignInForm;
-
