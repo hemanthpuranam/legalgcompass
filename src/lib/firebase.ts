@@ -16,6 +16,7 @@ const firebaseConfig = {
 
 let app: any = null; // Initialize app outside the conditional block
 let analyticsInstance: any = null;
+let auth: any = null;
 
 // Check if Firebase config values are present
 const hasFirebaseConfig =
@@ -38,12 +39,13 @@ if (!app && hasFirebaseConfig) {
       app = getApp();
     }
     analyticsInstance = getAnalytics(app);
+    auth = getAuth(app);
   } catch (error: any) {
     console.error('Failed to initialize Firebase app:', error);
   }
 }
 
-export {app};
+export {app, auth};
 
 export const analytics = () => {
   if (typeof window !== 'undefined' && app) {
