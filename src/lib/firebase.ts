@@ -5,13 +5,13 @@ import { getAuth } from "firebase/auth"; // Import getAuth
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAToKyQ5_MmrimQr2JaPC8ikxpGaUGUpBY",
-    authDomain: "urlawyer-50368.firebaseapp.com",
-    projectId: "urlawyer-50368",
-    storageBucket: "urlawyer-50368.firebasestorage.app",
-    messagingSenderId: "84810542536",
-    appId: "1:84810542536:web:b0ebea9c48d9aad923a4fd",
-  measurementId: "G-2RR5G4NPMF"
+  apiKey: "AIzaSyAToKyQ5_MmrimQr2JaPC8ikxpGaUGUpBY",
+  authDomain: "urlawyer-50368.firebaseapp.com",
+  projectId: "urlawyer-50368",
+  storageBucket: "urlawyer-50368.firebasestorage.app",
+  messagingSenderId: "84810542536",
+  appId: "1:84810542536:web:e6b9193fe9cbbb8b23a4fd",
+  measurementId: "G-YPEYHNFEB2"
 };
 
 let app: any = null; // Initialize app outside the conditional block
@@ -52,5 +52,3 @@ export const analytics = () => {
     return null;
   }
 };
-
-
