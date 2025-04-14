@@ -25,7 +25,6 @@ export default function Home() {
           } else {
             setIsAuthenticated(false);
             setDisplayName(null);
-            router.push('/auth');
           }
           setIsLoading(false); // Set loading to false after auth check
         });
@@ -72,6 +71,7 @@ export default function Home() {
   }
 
   if (!isAuthenticated) {
+    router.push('/auth');
     return null; // Or a loading indicator if desired
   }
 
@@ -93,5 +93,3 @@ export default function Home() {
     </div>
   );
 }
-
-
