@@ -16,31 +16,30 @@ export default function Home() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (app) {
-        const auth = getAuth(app);
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-          if (user) {
-            setIsAuthenticated(true);
-            setDisplayName(user.displayName); // Set the display name
-          } else {
-            setIsAuthenticated(false);
-            setDisplayName(null);
-          }
-          setIsLoading(false); // Set loading to false after auth check
-        });
-
-        return () => unsubscribe(); // Cleanup subscription on unmount
-      } else {
+      if (!app) {
         console.error("Firebase app not initialized.");
         setIsLoading(false);
         setIsAuthenticated(false);
         router.push('/auth');
-        return () => {};
+        return;
       }
+
+      const auth = getAuth(app);
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setIsAuthenticated(true);
+          setDisplayName(user.displayName); // Set the display name
+        } else {
+          setIsAuthenticated(false);
+          setDisplayName(null);
+        }
+        setIsLoading(false); // Set loading to false after auth check
+      });
+
+      return () => unsubscribe(); // Cleanup subscription on unmount
     };
 
-    const unsubscribe = checkAuth();
-    return unsubscribe;
+    checkAuth();
   }, [router]);
 
   const handleSignOut = async () => {

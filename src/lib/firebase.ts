@@ -14,6 +14,8 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
+let app: any = null; // Initialize app outside the conditional block
+
 // Check if Firebase config values are present
 const hasFirebaseConfig =
   firebaseConfig.apiKey &&
@@ -24,10 +26,18 @@ const hasFirebaseConfig =
   firebaseConfig.appId &&
   firebaseConfig.measurementId;
 
-let appInitialized = false;
 
 // Initialize Firebase only if config values are present and app is not already initialized
-export const app = hasFirebaseConfig ? (getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()) : null;
+if (!app && hasFirebaseConfig) {
+  try {
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    console.log('Firebase app initialized successfully!');
+  } catch (error: any) {
+    console.error('Failed to initialize Firebase app:', error);
+  }
+}
+
+export {app};
 
 export const analytics = () => {
   if (typeof window !== 'undefined' && app) {
@@ -36,5 +46,3 @@ export const analytics = () => {
     return null;
   }
 };
-
-
