@@ -5,12 +5,12 @@ import { getAuth } from "firebase/auth"; // Import getAuth
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    apiKey: "AIzaSyC1m_tLjOb6leSVdKy3d3opzhlBL3NnVAA",
+    authDomain: "legal-compass.firebaseapp.com",
+    projectId: "legal-compass",
+    storageBucket: "legal-compass.firebasestorage.app",
+    messagingSenderId: "1056458077242",
+    appId: "1:1056458077242:web:80e48b3329e4876620f103",
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
@@ -46,3 +46,4 @@ export const analytics = () => {
     return null;
   }
 };
+
